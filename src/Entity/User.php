@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer', nullable: true)]
     private $phone;
 
-    #[ORM\OneToMany(mappedBy: 'user_test', targetEntity: Todo::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Todo::class)]
     private $todos;
 
     #[ORM\Column(type: 'boolean')]

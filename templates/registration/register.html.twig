@@ -3,22 +3,38 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container min-vh-100 d-flex flex-column justify-content-center align-items-center">
         {% for flash_error in app.flashes('verify_email_error') %}
             <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
         {% endfor %}
 
-        <h1>Register</h1>
-
         {% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
         {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_row(registrationForm.name, {
+                label: 'Imie'
+            }) }}
+            {{ form_row(registrationForm.surname, {
+                label: 'Nazwisko'
+            }) }}
+            {{ form_row(registrationForm.username, {
+                label: 'Nazwa użytkownika'
+            }) }}
+            {{ form_row(registrationForm.email, {
+                label: 'E-mail'
+            }) }}
+            {{ form_row(registrationForm.phone, {
+                label: 'Telefon'
+            }) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Hasło'
+            }) }}
 
-        <button type="submit" class="btn">Register</button>
+
+        <button class="d-block btn btn-primary mb-2 mt-5 mx-auto" type="submit">
+            Zarejestruj się
+        </button>
+
+        <a href="{{ path('app_login') }}" class="d-block text-center">Zaloguj się</a>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

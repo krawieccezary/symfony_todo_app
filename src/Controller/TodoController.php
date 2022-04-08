@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
 {
-    #[Route('/', name: 'app_todo'), IsGranted('ROLE_ADMIN')]
+    #[Route('/', name: 'app_todo'), IsGranted('ROLE_USER')]
     public function index(): Response
     {
         return $this->render('todo/index.html.twig', [
