@@ -4,8 +4,25 @@
 
 {% block body %}
     <main>
-        <div class="container">
-{#            {{ dump(todos) }}#}
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-8">
+                    {% if todos is empty %}
+                        <span>Brak zadań do wykonania</span>
+                    {% else %}
+                        {{ dump(todos) }}
+                    {% endif %}
+                </div>
+                <div class="col-4">
+                    <!-- Button trigger modal -->
+                    <button class="d-inline-block border-0 fs-2 text-primary bg-transparent" tabindex="0" data-bs-toggle="modal" data-bs-target="#addTaskModal" >
+                        <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Dodaj zadanie">
+                            <i class="bi bi-plus-square-fill"></i>
+                        </span>
+                    </button>
+                    {% include('/todo/_add_task_modal.html.twig') %}
+                </div>
+            </div>
         </div>
     </main>
 {% endblock %}
