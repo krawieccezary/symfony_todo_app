@@ -26,7 +26,7 @@ class Todo
     private ?bool $is_period;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    private ?\DateInterval $period_from;
+    private ?\DateTimeInterface $period_from;
 
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $period_to;
@@ -94,12 +94,12 @@ class Todo
         return $this;
     }
 
-    public function getPeriodFrom(): ?\DateInterval
+    public function getPeriodFrom(): ?\DateTimeInterface
     {
         return $this->period_from;
     }
 
-    public function setPeriodFrom(?\DateInterval $period_from): self
+    public function setPeriodFrom(?\DateTimeInterface $period_from): self
     {
         $this->period_from = $period_from;
 

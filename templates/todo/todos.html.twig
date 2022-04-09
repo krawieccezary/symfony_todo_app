@@ -10,12 +10,24 @@
                     {% if todos is empty %}
                         <span>Brak zadań do wykonania</span>
                     {% else %}
-                        {{ dump(todos) }}
+                        <ul class="list-group list-group-flush text-start">
+                            {% for todo in todos %}
+                                <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">{{ todo.name }}</div>
+                                        {{ todo.description }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ path('app_todo', {id: todo.id}) }}"><i class="bi bi-pencil"></i></a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     {% endif %}
                 </div>
                 <div class="col-4">
                     <!-- Button trigger modal -->
-                    <button class="d-inline-block border-0 fs-2 text-primary bg-transparent" tabindex="0" data-bs-toggle="modal" data-bs-target="#addTaskModal" >
+                    <button class="d-inline-block position-fixed border-0 fs-2 text-primary bg-transparent" tabindex="0" data-bs-toggle="modal" data-bs-target="#addTaskModal" >
                         <span data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Dodaj zadanie">
                             <i class="bi bi-plus-square-fill"></i>
                         </span>
