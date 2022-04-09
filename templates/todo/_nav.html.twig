@@ -1,0 +1,58 @@
+<nav class="position-absolute top-0 end-0">
+    <ul class="nav nav-pills justify-content-end mx-2">
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                <i class="bi bi-list fs-1"></i>
+            </a>
+            <ul class="dropdown-menu py-0">
+                {% if app.user %}
+                <li>
+                    <span class="dropdown-item bg-primary py-2 text-white">
+                        Witaj, {{ app.user.username }}
+                    </span>
+                </li>
+                <li><hr class="dropdown-divider m-0"></li>
+                <li>
+                    <a class="dropdown-item d-flex justify-content-between py-2" href="{{ path('app_todos') }}">
+                        Twoje zadania
+                        <i class="bi bi-list-task"></i>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex justify-content-between py-2" href="#">
+                        Twoje dane
+                        <i class="bi bi-person"></i>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex justify-content-between py-2" href="#">
+                        Ustawienia
+                        <i class="bi bi-sliders"></i>
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider m-0"></li>
+                <li>
+                    <a href="{{ path('app_logout') }}" class="dropdown-item d-flex justify-content-between py-2">
+                        Wyloguj się
+                        <i class="bi bi-box-arrow-right"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{{ path('app_login') }}" class="dropdown-item d-flex justify-content-between py-2">
+                        Zaloguj się
+                        <i class="bi bi-person-fill"></i>
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider m-0"></li>
+                <li>
+                    <a href="{{ path('app_register') }}" class="dropdown-item d-flex justify-content-between py-2">
+                        Zarejestruj się
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </li>
+    </ul>
+</nav>

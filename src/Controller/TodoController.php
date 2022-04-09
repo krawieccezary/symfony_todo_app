@@ -9,11 +9,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
 {
-    #[Route('/', name: 'app_todo'), IsGranted('ROLE_USER')]
+    #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('todo/index.html.twig', [
-            'controller_name' => 'TodoController',
+        return $this->render('todo/index.html.twig');
+    }
+
+    #[Route('/todos', name: 'app_todos'), IsGranted('IS_AUTHENTICATED')]
+    public function welcomePage(): Response
+    {
+        $todos = $this->getUser()->getTodos();
+        return $this->render('todo/todos.html.twig', [
+            'todos' => $todos
         ]);
     }
 }
