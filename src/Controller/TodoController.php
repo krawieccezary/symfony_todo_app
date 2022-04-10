@@ -35,6 +35,7 @@ class TodoController extends AbstractController
                 $todo->setName($form->get('name')->getData());
                 $todo->setDescription($form->get('description')->getData());
                 $todo->setDate($form->get('date')->getData());
+                $todo->setPriority($form->get('priority')->getData());
                 $todo->setIsPeriod($form->get('is_period')->getData());
                 $todo->setPeriodFrom($form->get('period_from')->getData());
                 $todo->setPeriodTo($form->get('period_to')->getData());

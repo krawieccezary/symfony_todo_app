@@ -2,9 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Priority;
 use App\Entity\Todo;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,10 +26,14 @@ class TodoFormType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Opis'
             ])
-            ->add('date', DateType::class, [
-                'label' => 'Data'
+            ->add('date', DateTimeType::class, [
+                'label' => 'Data',
+                'widget' => 'single_text',
             ])
-            ->add('priority')
+            ->add('priority', EntityType::class, [
+                'class' => Priority::class,
+                'choice_label' => 'title'
+            ])
             ->add('is_period', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Zadanie cykliczne',
@@ -41,13 +48,16 @@ class TodoFormType extends AbstractType
                 ]
             ])
             ->add('period_from', DateType::class, [
-                'label' => 'Od'
+                'label' => 'Od',
+                'widget' => 'single_text',
             ])
             ->add('period_to', DateType::class, [
-                'label' => 'Do'
+                'label' => 'Do',
+                'widget' => 'single_text',
             ])
             ->add('period_time', TimeType::class, [
-                'label' => 'Godzina'
+                'label' => 'Godzina',
+                'widget' => 'single_text',
             ])
         ;
     }
