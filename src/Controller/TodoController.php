@@ -14,11 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
 {
-    private $entityManager;
+    private \Doctrine\Persistence\ObjectManager $entityManager;
+    private TodoRepository $todoRepository;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, TodoRepository $todoRepository,)
     {
         $this->entityManager = $doctrine->getManager();
+        $this->todoRepository = $todoRepository;
     }
 
     #[Route('/', name: 'app_home')]
@@ -27,7 +29,7 @@ class TodoController extends AbstractController
         return $this->render('todo/index.html.twig');
     }
 
-    #[Route('/todos', name: 'app_todos'), IsGranted('IS_AUTHENTICATED')]
+    #[Route('/todos', name: 'app_todos'), IsGranted('IS_AUTHENTICATED_FULLY')]
     public function todosPage(Request $request): Response
     {
         $todos = $this->getUser()->getTodos();
@@ -68,10 +70,10 @@ class TodoController extends AbstractController
         ]);
     }
 
-    #[Route('/todo/{id}', name: 'app_todo'), IsGranted('IS_AUTHENTICATED')]
-    public function todoPage($id, TodoRepository $todoRepository, Request $request)
+    #[Route('/todo/{id}', name: 'app_todo'), IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function todoPage($id, Request $request)
     {
-        $todo = $todoRepository->find($id);
+        $todo = $this->todoRepository->find($id);
         $form = $this->createForm(TodoFormType::class, $todo);
         $form->handleRequest($request);
 
@@ -90,5 +92,21 @@ class TodoController extends AbstractController
             'todo' => $todo,
             'form' => $form
         ]);
+    }
+
+    #[Route('/todo/remove/{id}', name: 'app_remove_todo'), IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function removeTodo($id): Response
+    {
+        $todo = $this->todoRepository->find($id);
+
+        try {
+            $this->entityManager->remove($todo);
+            $this->entityManager->flush();
+            $this->addFlash('sukces', 'Zadanie pomyślnie usunięto.');
+        } catch (\Exception $exception) {
+            $this->addFlash('sukces', 'Wystąpił problem. Zadanie nie zostało usunięte.');
+        }
+
+        return $this->redirectToRoute('app_todos');
     }
 }
