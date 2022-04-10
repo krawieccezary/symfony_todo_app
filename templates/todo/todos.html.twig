@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TodoController!{% endblock %}
+{% block title %}{{ parent() }} | Twoje zadania{% endblock %}
 
 {% block body %}
     <main>
@@ -36,5 +36,6 @@
                 </div>
             </div>
         </div>
+        {% include('todo/_toasts.html.twig') %}
     </main>
 {% endblock %}

@@ -1,11 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TodoController!{% endblock %}
+{% block title %}{{ parent() }} | {{ todo.name }}{% endblock %}
 
 {% block body %}
     <main>
         <div class="container">
-            {{ id }}
+            <div class="col-8">
+                {% form_theme form 'bootstrap_5_layout.html.twig' %}
+                {{ form_start(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.priority) }}
+                {{ form_row(form.date) }}
+                {{ form_row(form.is_period) }}
+                <div class="collapse{% if form.is_period.vars.checked %} show{% endif %}" id="periodOptions">
+                    <div class="d-flex justify-content-between">
+                        {{ form_row(form.period_from) }}
+                        {{ form_row(form.period_to) }}
+                        {{ form_row(form.period_time) }}
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-top border-dark text-end">
+                    <a href="{{ path('app_todos') }}" class="btn btn-secondary">Anuluj</a>
+                    <button type="submit" class="btn btn-primary">Zapisz</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
         </div>
+        {% include('todo/_toasts.html.twig') %}
     </main>
 {% endblock %}

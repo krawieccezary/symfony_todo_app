@@ -50,14 +50,17 @@ class TodoFormType extends AbstractType
             ->add('period_from', DateType::class, [
                 'label' => 'Od',
                 'widget' => 'single_text',
+                'required' => false
             ])
             ->add('period_to', DateType::class, [
                 'label' => 'Do',
                 'widget' => 'single_text',
+                'required' => false
             ])
             ->add('period_time', TimeType::class, [
                 'label' => 'Godzina',
                 'widget' => 'single_text',
+                'required' => false
             ])
         ;
     }
