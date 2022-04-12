@@ -33,7 +33,10 @@ class TodoController extends AbstractController
     #[Route('/todos', name: 'app_todos'), IsGranted('IS_AUTHENTICATED_FULLY')]
     public function todosPage(Request $request): Response
     {
-        $todos = $this->getUser()->getTodos();
+        $todos = $this->todoRepository->findBy(
+            ['user' => $this->getUser()],
+            ['date' => 'ASC']
+        );
 
         $form = $this->createForm(TodoFormType::class);
         $form->handleRequest($request);

@@ -1,0 +1,31 @@
+{% set today = "now" | date('d-m-Y') %}
+{% set todoDay = todo.date | date('d-m-Y') %}
+
+<li class="list-group-item d-flex justify-content-between align-items-start{% if today == todoDay %} bg-primary text-white{% endif %}">
+    <input class="form-check-input me-1" type="checkbox"
+            {% if not todo.getIsCompleted %}
+                value="{{ path('app_completed_todo', {id: todo.id}) }}"
+            {% else %}
+                value="{{ path('app_uncompleted_todo', {id: todo.id}) }}"
+            {% endif %}
+           aria-label="{{ todo.name }}" onchange="window.location = this.value" {% if todo.getIsCompleted %}checked{% endif %}>
+    <div class="ms-2 me-auto">
+        <div class="d-inline-block fw-bold{% if todo.getIsCompleted %} text-decoration-line-through{% endif %}">{{ todo.name }}</div>
+        <div class="d-inline-block">
+            {% for i in 0..2 %}
+                {% if i < todo.getPriority.power %}
+                    <i class="bi bi-star-fill"></i>
+                {% else %}
+                    <i class="bi bi-star"></i>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <small class="d-block fw-lighter">{{ todo.date | date('d-m-Y H:i:s') }}</small>
+        <div class="mt-2">{{ todo.description }}</div>
+    </div>
+    <div>
+        <a class="{% if today == todoDay %}text-white{% endif %}" href="{{ path('app_todo', {id: todo.id}) }}"><i class="bi bi-pencil"></i></a>
+        <a class="{% if today == todoDay %}text-white{% endif %}" href="{{ path('app_remove_todo', {id: todo.id}) }}"><i class="bi bi-trash3"></i>
+        </a>
+    </div>
+</li>

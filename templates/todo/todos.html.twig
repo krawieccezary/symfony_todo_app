@@ -12,37 +12,7 @@
                     {% else %}
                         <ul class="list-group list-group-flush text-start pb-5">
                             {% for todo in todos %}
-                                <li class="list-group-item d-flex justify-content-between align-items-start">
-                                    <input class="form-check-input me-1" type="checkbox"
-                                           {% if not todo.getIsCompleted %}
-                                               value="{{ path('app_completed_todo', {id: todo.id}) }}"
-                                           {% else %}
-                                               value="{{ path('app_uncompleted_todo', {id: todo.id}) }}"
-                                           {% endif %}
-                                           aria-label="{{ todo.name }}" onchange="window.location = this.value" {% if todo.getIsCompleted %}checked{% endif %}>
-                                    <div class="ms-2 me-auto">
-                                        <div class="d-inline-block fw-bold{% if todo.getIsCompleted %} text-decoration-line-through{% endif %}">{{ todo.name }}</div>
-                                        <div class="d-inline-block">
-                                            {% for i in 0..2 %}
-                                                {% if i < todo.getPriority.power %}
-                                                    <i class="bi bi-star-fill"></i>
-                                                {% else %}
-                                                    <i class="bi bi-star"></i>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                        <small class="d-block fw-lighter">{{ todo.date | date('m-d-Y H:i:s') }}</small>
-                                        <div class="mt-2">
-                                            {{ todo.description }}
-                                        </div>
-{#                                        {% if todo.is_completed %} checked{% endif %}#}
-                                    </div>
-                                    <div>
-                                        <a href="{{ path('app_todo', {id: todo.id}) }}"><i class="bi bi-pencil"></i></a>
-                                        <a href="{{ path('app_remove_todo', {id: todo.id}) }}"><i class="bi bi-trash3"></i>
-                                        </a>
-                                    </div>
-                                </li>
+                                {{ include('/todo/_todos_list_item.html.twig', {todo: todo}) }}
                             {% endfor %}
                         </ul>
                     {% endif %}
@@ -54,10 +24,10 @@
                             <i class="bi bi-plus-square-fill"></i>
                         </span>
                     </button>
-                    {% include('/todo/_add_task_modal.html.twig') %}
+                    {{ include('/todo/_add_task_modal.html.twig') }}
                 </div>
             </div>
         </div>
-        {% include('todo/_toasts.html.twig') %}
+        {{ include('todo/_toasts.html.twig') }}
     </main>
 {% endblock %}
