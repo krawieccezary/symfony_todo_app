@@ -34,7 +34,7 @@ class Todo
     #[ORM\Column(type: 'time', nullable: true)]
     private ?\DateTimeInterface $period_time;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[ORM\Column(type: 'boolean')]
     private ?bool $is_completed;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'todos')]
