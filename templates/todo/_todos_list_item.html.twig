@@ -20,7 +20,15 @@
                 {% endif %}
             {% endfor %}
         </div>
-        <small class="d-block fw-lighter">{{ todo.date | date('d-m-Y H:i:s') }}</small>
+        <small class="d-block fw-lighter">
+            {% if todo.getIsPeriod %}
+                zadanie cykliczne ({{ todo.getPeriodFrom | date('d-m-Y') }} - {{ todo.getPeriodTo | date('d-m-Y') }})
+                <br>
+                godz. {{ todo.getPeriodTime | date('H:i') }}
+            {% else %}
+                {{ todo.date | date('d-m-Y H:i') }}
+            {% endif %}
+        </small>
         <div class="mt-2">{{ todo.description }}</div>
     </div>
     <div>

@@ -7,6 +7,7 @@ use App\Form\CompletedTodoType;
 use App\Form\TodoFormType;
 use App\Repository\TodoRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TodoController extends AbstractController
 {
-    private \Doctrine\Persistence\ObjectManager $entityManager;
+    private ObjectManager $entityManager;
     private TodoRepository $todoRepository;
 
-    public function __construct(ManagerRegistry $doctrine, TodoRepository $todoRepository,)
+    public function __construct(ManagerRegistry $doctrine, TodoRepository $todoRepository)
     {
         $this->entityManager = $doctrine->getManager();
         $this->todoRepository = $todoRepository;
@@ -64,12 +65,9 @@ class TodoController extends AbstractController
             return $this->redirectToRoute('app_todos');
         }
 
-        $completedTodoForm = $this->createForm(CompletedTodoType::class);
-
         return $this->renderForm('todo/todos.html.twig', [
             'todos' => $todos,
-            'addTaskForm' => $form,
-            'completedTodoForm' => $completedTodoForm
+            'addTaskForm' => $form
         ]);
     }
 
