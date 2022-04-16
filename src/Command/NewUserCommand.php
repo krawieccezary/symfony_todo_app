@@ -8,9 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Mime\Address;
@@ -46,18 +44,23 @@ class NewUserCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $username = $io->ask('Podaj nazwę nowego użytkownika', 'Admin');
-        $email = $io->ask('Podaj e-mail nowego użytkownika', 'example@example.com');
+        $username = $io->ask('Podaj nazwę nowego użytkownika');
+        $email = $io->ask('Podaj e-mail nowego użytkownika');
+
+        while($this->entityManager->getRepository(User::class)->isEmailExists($email)){
+            $email = $io->ask('Użytkownik o podanym adresie e-mail już istnieje. Podaj inny e-mail');
+        };
+
         $name = $io->ask('Podaj imię nowego użytkownika');
         $surname = $io->ask('Podaj nazwisko nowego użytkownika');
         $phone = $io->ask('Podaj numer telefonu nowego użytkownika');
-        $password = $io->ask('Podaj hasło nowego użytkownika');
+        $plainPassword = $io->askHidden('Podaj hasło nowego użytkownika');
 
         $user = new User();
         $user->setPassword(
             $this->userPasswordHasher->hashPassword(
                 $user,
-                $password
+                $plainPassword
             )
         );
         $user->setRoles($user->getRoles());
@@ -66,6 +69,7 @@ class NewUserCommand extends Command
         $user->setSurname($surname);
         $user->setPhone($phone);
         $user->setEmail($email);
+
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
