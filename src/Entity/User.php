@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -39,13 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $surname;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $phone;
+    private ?int $phone;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Todo::class)]
-    private $todos;
+    private Collection $todos;
 
     #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     public function __construct()
     {
@@ -171,9 +173,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Todo>
+     * @return ArrayCollection<int, Todo>
      */
-    public function getTodos(): Collection
+    public function getTodos(): ArrayCollection
     {
         return $this->todos;
     }

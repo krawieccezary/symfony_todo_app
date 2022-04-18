@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Todo;
-use App\Form\CompletedTodoType;
 use App\Form\TodoFormType;
 use App\Repository\TodoRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -31,7 +32,7 @@ class TodoController extends AbstractController
         return $this->render('todo/index.html.twig');
     }
 
-    #[Route('/todos', name: 'app_todos'), IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route('/todos', name: 'app_todos')]
     public function todosPage(Request $request): Response
     {
         $todos = $this->todoRepository->findBy(
@@ -57,6 +58,7 @@ class TodoController extends AbstractController
 
                 $this->entityManager->persist($todo);
                 $this->entityManager->flush();
+
                 $this->addFlash('sukces', 'Dodano nowe zadanie!');
             } catch (\Exception $exception) {
                 $this->addFlash('Błąd', 'Wystąpił problem. Zadanie nie zostało dodane.');
@@ -71,8 +73,8 @@ class TodoController extends AbstractController
         ]);
     }
 
-    #[Route('/todo/{id}', name: 'app_todo'), IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function todoPage($id, Request $request)
+    #[Route('/todo/{id}', name: 'app_todo', methods: ['GET'])]
+    public function todoPage(int $id, Request $request)
     {
         $todo = $this->todoRepository->find($id);
         $form = $this->createForm(TodoFormType::class, $todo);
@@ -81,7 +83,6 @@ class TodoController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             try {
                 $this->entityManager->persist($todo);
-                $this->entityManager->flush();
                 $this->addFlash('sukces', 'Zadanie zostało zaktualizowane.');
             } catch (\Exception $exception) {
                 $this->addFlash('błąd', 'Wystąpił problem. Zadanie nie zostało zaktualizowane.');
@@ -95,14 +96,13 @@ class TodoController extends AbstractController
         ]);
     }
 
-    #[Route('/todo/remove/{id}', name: 'app_remove_todo'), IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function removeTodo($id): Response
+    #[Route('/todo/remove/{id}', name: 'app_remove_todo', methods: ['GET'])]
+    public function removeTodo(int $id): Response
     {
         $todo = $this->todoRepository->find($id);
 
         try {
             $this->entityManager->remove($todo);
-            $this->entityManager->flush();
             $this->addFlash('sukces', 'Zadanie pomyślnie usunięto.');
         } catch (\Exception $exception) {
             $this->addFlash('sukces', 'Wystąpił problem. Zadanie nie zostało usunięte.');
@@ -111,15 +111,14 @@ class TodoController extends AbstractController
         return $this->redirectToRoute('app_todos');
     }
 
-    #[Route('/todo/completed/{id}', name: 'app_completed_todo'), IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function setIsCompletedTodo($id, Request $request): Response
+    #[Route('/todo/completed/{id}', name: 'app_completed_todo', methods: ['GET'])]
+    public function setIsCompletedTodo(int $id): Response
     {
         $todo = $this->todoRepository->find($id);
 
         try {
             $todo->setIsCompleted(true);
             $this->entityManager->persist($todo);
-            $this->entityManager->flush();
         } catch (\Exception $exception) {
             $this->addFlash('błąd', 'Wystąpił problem. Nie udało się zaznaczyć zadania.');
         }
@@ -127,15 +126,14 @@ class TodoController extends AbstractController
         return $this->redirectToRoute('app_todos');
     }
 
-    #[Route('/todo/uncompleted/{id}', name: 'app_uncompleted_todo'), IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function setIsUncompletedTodo($id, Request $request): Response
+    #[Route('/todo/uncompleted/{id}', name: 'app_uncompleted_todo', methods: ['GET'])]
+    public function setIsUncompletedTodo(int $id): Response
     {
         $todo = $this->todoRepository->find($id);
 
         try {
             $todo->setIsCompleted(false);
             $this->entityManager->persist($todo);
-            $this->entityManager->flush();
         } catch (\Exception $exception) {
             $this->addFlash('błąd', 'Wystąpił problem. Nie udało się odznaczyć zadania.');
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\PriorityRepository;
@@ -16,13 +18,13 @@ class Priority
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $title;
+    private ?string $title;
 
     #[ORM\Column(type: 'integer')]
-    private $power;
+    private ?int $power;
 
     #[ORM\OneToMany(mappedBy: 'priority', targetEntity: Todo::class)]
-    private $todos;
+    private Collection $todos;
 
     public function __construct()
     {

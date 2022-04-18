@@ -70,12 +70,9 @@ class NewUserCommand extends Command
         $user->setPhone($phone);
         $user->setEmail($email);
 
-
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        //TODO Check Email is unique (UniqueEntity) and catch exception
-        //TODO Try create service CreateUserService
 
         // generate a signed url and email it to the user
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,

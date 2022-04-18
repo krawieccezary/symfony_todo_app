@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\TodoRepository;
@@ -23,19 +25,19 @@ class Todo
     private ?\DateTimeInterface $date;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private ?bool $is_period;
+    private ?bool $isPeriod;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    private ?\DateTimeInterface $period_from;
+    private ?\DateTimeInterface $periodFrom;
 
     #[ORM\Column(type: 'date', nullable: true)]
-    private ?\DateTimeInterface $period_to;
+    private ?\DateTimeInterface $periodTo;
 
     #[ORM\Column(type: 'time', nullable: true)]
-    private ?\DateTimeInterface $period_time;
+    private ?\DateTimeInterface $periodTime;
 
     #[ORM\Column(type: 'boolean')]
-    private ?bool $is_completed;
+    private ?bool $isCompleted;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'todos')]
     #[ORM\JoinColumn(nullable: false)]
@@ -43,7 +45,7 @@ class Todo
 
     #[ORM\ManyToOne(targetEntity: Priority::class, inversedBy: 'todos')]
     #[ORM\JoinColumn(nullable: false)]
-    private $priority;
+    private ?Priority $priority;
 
     public function getId(): ?int
     {
@@ -88,60 +90,60 @@ class Todo
 
     public function getIsPeriod(): ?bool
     {
-        return $this->is_period;
+        return $this->isPeriod;
     }
 
-    public function setIsPeriod(?bool $is_period): self
+    public function setIsPeriod(?bool $isPeriod): self
     {
-        $this->is_period = $is_period;
+        $this->isPeriod = $isPeriod;
 
         return $this;
     }
 
     public function getPeriodFrom(): ?\DateTimeInterface
     {
-        return $this->period_from;
+        return $this->periodFrom;
     }
 
-    public function setPeriodFrom(?\DateTimeInterface $period_from): self
+    public function setPeriodFrom(?\DateTimeInterface $periodFrom): self
     {
-        $this->period_from = $period_from;
+        $this->periodFrom = $periodFrom;
 
         return $this;
     }
 
     public function getPeriodTo(): ?\DateTimeInterface
     {
-        return $this->period_to;
+        return $this->periodTo;
     }
 
-    public function setPeriodTo(?\DateTimeInterface $period_to): self
+    public function setPeriodTo(?\DateTimeInterface $periodTo): self
     {
-        $this->period_to = $period_to;
+        $this->periodTo = $periodTo;
 
         return $this;
     }
 
     public function getPeriodTime(): ?\DateTimeInterface
     {
-        return $this->period_time;
+        return $this->periodTime;
     }
 
-    public function setPeriodTime(?\DateTimeInterface $period_time): self
+    public function setPeriodTime(?\DateTimeInterface $periodTime): self
     {
-        $this->period_time = $period_time;
+        $this->periodTime = $periodTime;
 
         return $this;
     }
 
     public function getIsCompleted(): ?bool
     {
-        return $this->is_completed;
+        return $this->isCompleted;
     }
 
-    public function setIsCompleted(?bool $is_completed): self
+    public function setIsCompleted(?bool $isCompleted): self
     {
-        $this->is_completed = $is_completed;
+        $this->isCompleted = $isCompleted;
 
         return $this;
     }
