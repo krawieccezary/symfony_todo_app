@@ -12,12 +12,12 @@
                 {{ form_row(form.description) }}
                 {{ form_row(form.priority) }}
                 {{ form_row(form.date) }}
-                {{ form_row(form.is_period) }}
-                <div class="collapse{% if form.is_period.vars.checked %} show{% endif %}" id="periodOptions">
+                {{ form_row(form.isPeriod) }}
+                <div class="collapse{% if form.isPeriod.vars.checked %} show{% endif %}" id="periodOptions">
                     <div class="d-flex justify-content-between">
-                        {{ form_row(form.period_from) }}
-                        {{ form_row(form.period_to) }}
-                        {{ form_row(form.period_time) }}
+                        {{ form_row(form.periodFrom) }}
+                        {{ form_row(form.periodTo) }}
+                        {{ form_row(form.periodTime) }}
                     </div>
                 </div>
                 <div class="mt-4 pt-4 border-top border-dark text-end">

@@ -34,7 +34,7 @@ class TodoFormType extends AbstractType
                 'class' => Priority::class,
                 'choice_label' => 'title'
             ])
-            ->add('is_period', CheckboxType::class, [
+            ->add('isPeriod', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Zadanie cykliczne',
                 'label_attr' => [
@@ -47,17 +47,17 @@ class TodoFormType extends AbstractType
                     'aria-controls' => 'periodOptions'
                 ]
             ])
-            ->add('period_from', DateType::class, [
+            ->add('periodFrom', DateType::class, [
                 'label' => 'Od',
                 'widget' => 'single_text',
                 'required' => false
             ])
-            ->add('period_to', DateType::class, [
+            ->add('periodTo', DateType::class, [
                 'label' => 'Do',
                 'widget' => 'single_text',
                 'required' => false
             ])
-            ->add('period_time', TimeType::class, [
+            ->add('periodTime', TimeType::class, [
                 'label' => 'Godzina',
                 'widget' => 'single_text',
                 'required' => false
