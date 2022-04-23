@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Ustawienia{% endblock %}
+
+{% block body %}
+
+    <main>
+        <div class="container">
+            <h2>Raport</h2>
+            {% form_theme reportForm 'bootstrap_5_layout.html.twig' %}
+            {{ form_start(reportForm) }}
+            <div class="col-6">
+                <hr>
+                <div class="row">
+                    <div class="col-6">{{ form_row(reportForm.dateFrom) }}</div>
+                    <div class="col-6">{{ form_row(reportForm.dateTo) }}</div>
+                </div>
+                <div class="mt-2 text-end">
+                    <button type="submit" class="btn btn-primary">Generuj</button>
+                </div>
+            </div>
+            {{ form_end(reportForm) }}
+        </div>
+        {{ include('todo/_toasts.html.twig') }}
+    </main>
+
+{% endblock %}

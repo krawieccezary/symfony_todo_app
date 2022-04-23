@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 /**
  * @method Todo|null find($id, $lockMode = null, $lockVersion = null)
@@ -44,6 +45,24 @@ class TodoRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+
+    /**
+     * // /**
+     * //  * @return Todo[] Returns an array of Todo objects
+     * //  */
+    public function findByDateInterval(\DateTime $fromDate, \DateTime $toDate): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.date >= :fromDate')
+            ->andWhere('t.date <= :toDate')
+            ->setParameters(array('fromDate' => $fromDate, 'toDate' => $toDate))
+            ->orderBy('t.date', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Todo[] Returns an array of Todo objects
