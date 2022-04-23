@@ -71,35 +71,16 @@ class TodoController extends AbstractController
     public function todoPage(int $id, Request $request)
     {
         $todo = $this->todoRepository->find($id);
+
+        if (!$todo) {
+            throw $this->createNotFoundException();
+        }
+
         $form = $this->createForm(TodoFormType::class, $todo);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-
-                $isPeriod = $form->get('isPeriod')->getData();
-                if ($isPeriod) {
-                    $periodDay = $form->get('periodFrom')->getData();
-                    $periodEnd = $form->get('periodTo')->getData();
-                    $days = array();
-
-                    while ($periodDay <= $periodEnd) {
-//                        $todo->setDate($periodDay);
-//                        $todo->setPeriodFrom($form->get('periodFrom')->getData());
-//                        $todo->setPeriodTo($form->get('periodTo')->getData());
-//                        $todo->setPeriodTime($form->get('periodTime')->getData());
-//                        $periodDay = $periodDay->modify('+1 day');
-//
-//                        $this->entityManager->persist($todo);
-//                        $this->entityManager->flush();
-
-                        $periodDay = $periodDay->modify('+1 day');
-                        $days[] = $periodDay;
-                    }
-                    dd($days);
-                }
-
-
                 $this->todoRepository->add($todo);
                 $this->addFlash('sukces', 'Zadanie zostało zaktualizowane.');
             } catch (\Exception $exception) {
@@ -119,6 +100,10 @@ class TodoController extends AbstractController
     {
         $todo = $this->todoRepository->find($id);
 
+        if (!$todo) {
+            throw $this->createNotFoundException();
+        }
+
         try {
             $this->todoRepository->remove($todo);
             $this->addFlash('sukces', 'Zadanie pomyślnie usunięto.');
@@ -134,9 +119,14 @@ class TodoController extends AbstractController
     {
         $todo = $this->todoRepository->find($id);
 
+        if (!$todo) {
+            throw $this->createNotFoundException();
+        }
+
         try {
             $todo->setIsCompleted(true);
-            $this->todoRepository->persist($todo);
+            $this->todoRepository->add($todo);
+            $this->addFlash('sukces', 'Zadanie ukończone.');
         } catch (\Exception $exception) {
             $this->addFlash('błąd', 'Wystąpił problem. Nie udało się zaznaczyć zadania.');
         }
@@ -149,9 +139,14 @@ class TodoController extends AbstractController
     {
         $todo = $this->todoRepository->find($id);
 
+        if (!$todo) {
+            throw $this->createNotFoundException();
+        }
+
         try {
             $todo->setIsCompleted(false);
-            $this->entityManager->persist($todo);
+            $this->todoRepository->add($todo);
+            $this->addFlash('info', 'Zadanie zaznaczone jako niekompletne.');
         } catch (\Exception $exception) {
             $this->addFlash('błąd', 'Wystąpił problem. Nie udało się odznaczyć zadania.');
         }
